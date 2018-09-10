@@ -1,7 +1,7 @@
 {
     "dev": {
         "app_function": "zappa-playground.app",
-        "profile_name": null,
+        "profile_name": "zappa-playground",
         "project_name": "zappa-playground",
         "runtime": "python3.6",
         "aws_region": "ap-northeast-1",
