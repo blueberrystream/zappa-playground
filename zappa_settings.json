@@ -8,6 +8,7 @@
         "s3_bucket": "zappa-a8fx1mujs",
         "xray_tracing": true,
         "keep_warm": false,
-        "memory_size": 128
+        "memory_size": 128,
+        "num_retained_versions": 5
     }
 }
