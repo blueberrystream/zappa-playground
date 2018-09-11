@@ -1,14 +1,18 @@
 {
     "dev": {
-        "app_function": "zappa-playground.app",
-        "profile_name": "zappa-playground",
         "project_name": "zappa-playground",
+
         "runtime": "python3.6",
+        "profile_name": "zappa-playground",
         "aws_region": "ap-northeast-1",
         "s3_bucket": "zappa-a8fx1mujs",
-        "xray_tracing": true,
-        "keep_warm": false,
+
+        "app_function": "zappa-playground.app",
+
         "memory_size": 128,
-        "num_retained_versions": 5
+        "num_retained_versions": 5,
+
+        "keep_warm": false,
+        "xray_tracing": true
     }
 }
