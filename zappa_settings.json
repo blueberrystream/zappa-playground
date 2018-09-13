@@ -16,6 +16,7 @@
         "xray_tracing": true
     },
     "staging": {
-        "extends": "dev"
+        "extends": "dev",
+        "profile_name": ""
     }
 }
