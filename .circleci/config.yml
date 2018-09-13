@@ -39,6 +39,18 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
+      - persist_to_workspace:
+          root: . # workspaceのrootパス（絶対パスかworking_directoryからの相対パス）
+          paths:
+            - . # 共有するパス（絶対パスかrootからの相対パス）
+  test:
+    docker:
+      - image: circleci/python:3.6-jessie
+    working_directory: ~/repo
+    steps:
+      - attach_workspace: # workspaceをアタッチする
+          at: .
+
       # run tests!
       # this example uses Django's built-in test-runner
       # other common Python testing frameworks include pytest and nose
@@ -49,3 +61,32 @@ jobs:
           command: |
             . venv/bin/activate
             pytest -v
+
+  deploy-staging:
+    docker:
+      - image: circleci/python:3.6-jessie
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: deploy
+          command: |
+            . venv/bin/activate
+            zappa update staging
+
+workflows:
+  version: 2
+  build_and_test_and_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy-staging:
+          context: zappa-playground-staging
+          requires:
+            - test
+          filters:
+            branches:
+              only: staging
