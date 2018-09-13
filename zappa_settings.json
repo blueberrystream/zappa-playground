@@ -14,5 +14,8 @@
 
         "keep_warm": false,
         "xray_tracing": true
+    },
+    "staging": {
+        "extends": "dev"
     }
 }
