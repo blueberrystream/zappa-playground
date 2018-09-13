@@ -39,7 +39,7 @@ def create_app():
             'timestamp': datetime.now().strftime('%c')
         })
 
-        return 'wrote! your name is ' + name
+        return 'wrote! your name is %s' % name
 
     @app.route('/dynamo/read')
     @app.route('/dynamo/read/<name>')
