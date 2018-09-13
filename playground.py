@@ -1,3 +1,5 @@
+import os
+
 from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_dynamo import Dynamo
@@ -18,7 +20,8 @@ def create_app():
     @app.route('/')
     def index(event=None, context=None):
         app.logger.info('Lambda function invoked index()')
-        return 'hello from Flask!'
+        stage = os.environ.get('STAGE')
+        return 'hello from Flask! this stage is %s' % stage
 
     # アプリを実行するIAM Roleｎ権限上、テーブル作成ができない
     # @app.route('/dynamo/create')
