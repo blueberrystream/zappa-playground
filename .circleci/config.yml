@@ -62,6 +62,19 @@ jobs:
             . venv/bin/activate
             pytest -v
 
+  deploy-dev:
+    docker:
+      - image: circleci/python:3.6-jessie
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: deploy dev
+          command: |
+            . venv/bin/activate
+            zappa update dev
+
   deploy-staging:
     docker:
       - image: circleci/python:3.6-jessie
@@ -70,7 +83,7 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: deploy
+          name: deploy staging
           command: |
             . venv/bin/activate
             zappa update staging
@@ -83,6 +96,13 @@ workflows:
       - test:
           requires:
             - build
+      - deploy-dev:
+          context: zappa-playground-staging
+          requires:
+            - test
+          filters:
+            branches:
+              only: dev
       - deploy-staging:
           context: zappa-playground-staging
           requires:
