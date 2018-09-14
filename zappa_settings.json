@@ -6,8 +6,6 @@
         "aws_region": "ap-northeast-1",
         "s3_bucket": "zappa-a8fx1mujs",
 
-        "api_key_required": true,
-
         "app_function": "playground.app",
 
         "memory_size": 128,
@@ -17,6 +15,8 @@
         "xray_tracing": true
     },
     "staging": {
-        "extends": "dev"
+        "extends": "dev",
+
+        "api_key_required": true
     }
 }
