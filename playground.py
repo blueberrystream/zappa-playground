@@ -21,7 +21,7 @@ def create_app():
     def index(event=None, context=None):
         app.logger.info('Lambda function invoked index()')
         stage = os.environ.get('STAGE')
-        return 'hello from Flask! this stage is %s' % stage
+        return 'hello from Flask! this stage is %s.' % stage
 
     # アプリを実行するIAM Roleｎ権限上、テーブル作成ができない
     # @app.route('/dynamo/create')
@@ -42,7 +42,7 @@ def create_app():
             'timestamp': datetime.now().strftime('%c')
         })
 
-        return 'wrote! your name is %s' % name
+        return 'wrote! your name is %s.' % name
 
     @app.route('/dynamo/read')
     @app.route('/dynamo/read/<name>')
