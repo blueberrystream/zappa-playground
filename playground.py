@@ -4,15 +4,10 @@ from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_dynamo import Dynamo
 
+from models import Log
+
 def create_app():
     app = Flask(__name__)
-    app.config['DYNAMO_TABLES'] = [
-        dict(
-            TableName='zappa-playground-logs',
-            KeySchema=[dict(AttributeName='name', KeyType='HASH')],
-            ProvisionedThroughput=dict(ReadCapacityUnits=1, WriteCapacityUnits=1)
-        )
-    ]
     app.config['JSON_AS_ASCII'] = False
 
     dynamo = Dynamo(app)
@@ -36,11 +31,8 @@ def create_app():
         if name is None:
             name = '名無しさん'
 
-        dynamo.tables['zappa-playground-logs'].put_item(Item={
-            'name': name,
-            'ip_address': request.remote_addr,
-            'timestamp': datetime.now().strftime('%c')
-        })
+        log = Log(name, request.remote_addr, datetime.now())
+        log.save()
 
         return 'wrote! your name is %s.' % name
 
@@ -50,12 +42,9 @@ def create_app():
         if name is None:
             name = '名無しさん'
 
-        response = dynamo.tables['zappa-playground-logs'].get_item(Key={
-            'name': name
-        })
-        item = response['Item']
+        log = Log.get(name)
 
-        return jsonify(item)
+        return jsonify(log)
     return app
 
 # この app という変数が zappa_setting.json の app_function で指定したもの
