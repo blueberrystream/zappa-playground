@@ -1,14 +1,13 @@
 import os
 
 from datetime import datetime
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from flask_dynamo import Dynamo
 
 from models import Log
 
 def create_app():
     app = Flask(__name__)
-    app.config['JSON_AS_ASCII'] = False
 
     dynamo = Dynamo(app)
 
@@ -44,7 +43,7 @@ def create_app():
 
         log = Log.get(name)
 
-        return jsonify(log)
+        return str(log)
     return app
 
 # この app という変数が zappa_setting.json の app_function で指定したもの
