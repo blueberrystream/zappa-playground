@@ -43,7 +43,12 @@ def create_app():
 
         log = Log.get(name)
 
-        return str(log)
+        return str({
+            'name': log.name,
+            'ip_address': log.ip_address,
+            'timestamp': log.timestamp.strftime('%c')
+        })
+
     return app
 
 # この app という変数が zappa_setting.json の app_function で指定したもの
