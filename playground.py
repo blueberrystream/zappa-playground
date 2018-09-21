@@ -30,7 +30,7 @@ def create_app():
         if name is None:
             name = '名無しさん'
 
-        log = Log(name, request.remote_addr, datetime.now())
+        log = Log(name, ip_address=request.remote_addr, timestamp=datetime.now())
         log.save()
 
         return 'wrote! your name is %s.' % name
