@@ -2,14 +2,12 @@ import os
 
 from datetime import datetime
 from flask import Flask, request
-from flask_dynamo import Dynamo
 
 from models import Log
 
+
 def create_app():
     app = Flask(__name__)
-
-    dynamo = Dynamo(app)
 
     @app.route('/')
     def index(event=None, context=None):
@@ -30,7 +28,11 @@ def create_app():
         if name is None:
             name = '名無しさん'
 
-        log = Log(name, ip_address=request.remote_addr, timestamp=datetime.now())
+        log = Log(
+            name,
+            ip_address=request.remote_addr,
+            timestamp=datetime.now()
+        )
         log.save()
 
         return 'wrote! your name is %s.' % name
@@ -50,6 +52,7 @@ def create_app():
         })
 
     return app
+
 
 # この app という変数が zappa_setting.json の app_function で指定したもの
 app = create_app()

@@ -1,6 +1,7 @@
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute
 
+
 class Log(Model):
     class Meta:
         table_name = 'zappa-playground-logs'
