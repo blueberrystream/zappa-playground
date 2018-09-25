@@ -60,6 +60,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            flake8
             pytest -v
 
   deploy-dev:
