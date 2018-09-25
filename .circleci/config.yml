@@ -57,10 +57,14 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
-          name: run tests
+          name: run lint
           command: |
             . venv/bin/activate
             flake8
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
             pytest -v
 
   deploy-dev:
