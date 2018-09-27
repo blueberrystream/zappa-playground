@@ -3,7 +3,7 @@ import os
 from flask import Flask
 
 
-def create_app(config_filename=None):
+def create_app():
     app = Flask(__name__)
 
     register_blueprints(app)
@@ -25,3 +25,7 @@ def register_home_routing(app):
     def home_index(event=None, context=None):
         stage = os.environ.get('STAGE')
         return 'hello from Flask! this stage is %s.' % stage
+
+
+# for zappa
+app = create_app()
