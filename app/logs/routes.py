@@ -38,7 +38,8 @@ class Log(Resource):
         except LogModel.DoesNotExist:
             api.abort(404, "{}'s log does not exist".format(name))
 
-    @api.doc(parser=parser)
+    @api.doc(description="Put the user's log")
+    @api.expect(log_def)
     @api.marshal_with(log_def)
     def put(self, name):
         args = parser.parse_args()
