@@ -54,4 +54,4 @@ class TodoList(Resource):
     def get(self):
         logs = LogModel.scan()
 
-        return [{'name': name} for name in logs]
+        return [{'name': name.get()} for name in logs]
