@@ -16,27 +16,27 @@ api = Api(
 ns = api.namespace('logs', description='Log operations')
 
 log_def = api.model('Log', {
-    'name': fields.String(required=True, description='The user\'s name'),
-    'ip_address': fields.String(description='The user\'s IP address'),
-    'timestamp': fields.DateTime(dt_format='rfc822'),
+    'name': fields.String(required=True, description="The user's name"),
+    'ip_address': fields.String(description="The user's IP address"),
+    'timestamp': fields.DateTime(dt_format='rfc822', description="Logged timestamp"),
 })
 listed_log_def = api.model('ListedLog', {
-    'name': fields.String(required=True, description='The user\'s name')
+    'name': fields.String(description="The user's name")
 })
 
 parser = api.parser()
 
 
 @ns.route('/<string:name>')
-@api.doc(responses={404: 'Log not found'}, params={'name': 'The user\'s name'})
+@api.doc(responses={404: "The user's log is not found"}, params={'name': "The user's name"})
 class Log(Resource):
-    @api.doc(description='name should be in logs')
+    @api.doc(description="Get the user's log")
     @api.marshal_with(log_def)
     def get(self, name):
         try:
             return LogModel.get(name)
         except LogModel.DoesNotExist:
-            api.abort(404, "Todo {} doesn't exist".format(name))
+            api.abort(404, "{}'s log does not exist".format(name))
 
     @api.doc(parser=parser)
     @api.marshal_with(log_def)
