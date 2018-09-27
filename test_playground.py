@@ -1,11 +1,11 @@
 import pytest
 
-import playground
+from app import create_app
 
 
 @pytest.fixture
 def client():
-    app = playground.create_app()
+    app = create_app()
     client = app.test_client()
     yield client
 
