@@ -6,9 +6,13 @@ from . import logs_blueprint
 from app.models import Log as LogModel
 
 
-api = Api(logs_blueprint, version='1.0', title='Logs API',
-          description='A simple Logs API'
-          )
+api = Api(
+        logs_blueprint,
+        version='1.0',
+        title='Logs API',
+        description='A simple Logs API',
+        doc='/doc'
+)
 ns = api.namespace('logs', description='Log operations')
 
 log_def = api.model('Log', {
