@@ -11,9 +11,10 @@ api = Api(
         version='1.0',
         title='Logs API',
         description='A simple Logs API',
-        doc='/doc'
+        doc='/doc/logs/',
+        default='logs'
 )
-ns = api.namespace('logs', description='Log operations')
+ns = api.namespace('logs')
 
 log_def = api.model('Log', {
     'name': fields.String(required=True, description="The user's name"),
