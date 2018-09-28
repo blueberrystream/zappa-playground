@@ -3,7 +3,7 @@ from flask import request
 from flask_restplus import Api, Resource, fields, inputs
 
 from . import logs_blueprint
-from app.models import Log as LogModel
+from app.models import Log as Log
 
 
 api = Api(
@@ -26,13 +26,13 @@ listed_log_def = api.model('ListedLog', {
 
 @api.route('/<string:name>')
 @api.doc(responses={404: "The user's log is not found"}, params={'name': "The user's name"})
-class Log(Resource):
+class LogResource(Resource):
     @api.doc(description="Get the user's log")
     @api.marshal_with(log_def)
     def get(self, name):
         try:
-            return LogModel.get(name)
-        except LogModel.DoesNotExist:
+            return Log.get(name)
+        except Log.DoesNotExist:
             api.abort(404, "{}'s log does not exist".format(name))
 
     @api.doc(description="Put the user's log")
@@ -48,16 +48,16 @@ class Log(Resource):
         ip_address = request.remote_addr if args['ip_address'] is None else args['ip_address']
         timestamp = datetime.now() if args['timestamp'] is None else args['timestamp']
 
-        log = LogModel(name, ip_address=ip_address, timestamp=timestamp)
+        log = Log(name, ip_address=ip_address, timestamp=timestamp)
         log.save()
 
         return log
 
 
 @api.route('/')
-class LogList(Resource):
+class LogListResource(Resource):
     @api.marshal_list_with(listed_log_def)
     def get(self):
-        logs = LogModel.scan()
+        logs = Log.scan()
 
         return [{'name': log.name} for log in logs]
