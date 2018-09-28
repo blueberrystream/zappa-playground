@@ -21,7 +21,7 @@ def register_blueprints(app):
 
 
 def register_home_routing(app):
-    @app.route('/')
+    @app.route('/home')
     def home_index(event=None, context=None):
         stage = os.environ.get('STAGE')
         return 'hello from Flask! this stage is %s.' % stage

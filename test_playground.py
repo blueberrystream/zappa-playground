@@ -11,5 +11,5 @@ def client():
 
 
 def test_index(client):
-    rv = client.get('/')
+    rv = client.get('/home')
     assert b'hello from Flask!' in rv.data

@@ -6,35 +6,41 @@ from . import logs_blueprint
 from app.models import Log as LogModel
 
 
-api = Api(logs_blueprint, version='1.0', title='Logs API',
-          description='A simple Logs API'
-          )
-ns = api.namespace('logs', description='Log operations')
+api = Api(
+        logs_blueprint,
+        version='1.0',
+        title='Logs API',
+        description='A simple Logs API',
+        doc='/doc/logs/',
+        default='logs'
+)
+ns = api.namespace('logs')
 
 log_def = api.model('Log', {
-    'name': fields.String(required=True, description='The user\'s name'),
-    'ip_address': fields.String(description='The user\'s IP address'),
-    'timestamp': fields.DateTime(dt_format='rfc822'),
+    'name': fields.String(required=True, description="The user's name"),
+    'ip_address': fields.String(description="The user's IP address"),
+    'timestamp': fields.DateTime(dt_format='rfc822', description="Logged timestamp"),
 })
 listed_log_def = api.model('ListedLog', {
-    'name': fields.String(required=True, description='The user\'s name')
+    'name': fields.String(description="The user's name")
 })
 
 parser = api.parser()
 
 
 @ns.route('/<string:name>')
-@api.doc(responses={404: 'Log not found'}, params={'name': 'The user\'s name'})
+@api.doc(responses={404: "The user's log is not found"}, params={'name': "The user's name"})
 class Log(Resource):
-    @api.doc(description='name should be in logs')
+    @api.doc(description="Get the user's log")
     @api.marshal_with(log_def)
     def get(self, name):
         try:
             return LogModel.get(name)
         except LogModel.DoesNotExist:
-            api.abort(404, "Todo {} doesn't exist".format(name))
+            api.abort(404, "{}'s log does not exist".format(name))
 
-    @api.doc(parser=parser)
+    @api.doc(description="Put the user's log")
+    @api.expect(log_def)
     @api.marshal_with(log_def)
     def put(self, name):
         args = parser.parse_args()
@@ -50,4 +56,4 @@ class TodoList(Resource):
     def get(self):
         logs = LogModel.scan()
 
-        return [{'name': name} for name in logs]
+        return [{'name': name.get()} for name in logs]
