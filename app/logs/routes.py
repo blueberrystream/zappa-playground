@@ -11,10 +11,8 @@ api = Api(
         version='1.0',
         title='Logs API',
         description='A simple Logs API',
-        doc='/doc/logs/',
-        default='logs'
+        doc='/doc/'
 )
-ns = api.namespace('logs')
 
 log_def = api.model('Log', {
     'name': fields.String(required=True, description="The user's name"),
@@ -26,7 +24,7 @@ listed_log_def = api.model('ListedLog', {
 })
 
 
-@ns.route('/<string:name>')
+@api.route('/<string:name>')
 @api.doc(responses={404: "The user's log is not found"}, params={'name': "The user's name"})
 class Log(Resource):
     @api.doc(description="Get the user's log")
@@ -56,8 +54,8 @@ class Log(Resource):
         return log
 
 
-@ns.route('/')
-class TodoList(Resource):
+@api.route('/')
+class LogList(Resource):
     @api.marshal_list_with(listed_log_def)
     def get(self):
         logs = LogModel.scan()
