@@ -1,13 +1,15 @@
 import pytest
 
-import playground
+from app import create_app
+
 
 @pytest.fixture
 def client():
-    app = playground.create_app()
+    app = create_app()
     client = app.test_client()
     yield client
 
+
 def test_index(client):
-    rv = client.get('/')
+    rv = client.get('/home')
     assert b'hello from Flask!' in rv.data
